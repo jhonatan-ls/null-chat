@@ -45,7 +45,15 @@ app.use(helmet({
 app.use(express.json({ limit: '100kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+// CORRIGIDO: usa variáveis separadas do Postgres (PGHOST, PGPASSWORD, etc.)
+// em vez de DATABASE_URL, para evitar problemas de URL-encoding na senha.
+const pool = new Pool({
+  host: process.env.PGHOST || 'localhost',
+  port: parseInt(process.env.PGPORT, 10) || 5432,
+  user: process.env.PGUSER || 'postgres',
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE || 'nullchat',
+});
 
 const UPLOAD_DIR = path.join(__dirname, 'uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
