@@ -1,10 +1,17 @@
+# =========================================
 # 1. SEGREDOS E DADOS SENSÍVEIS (CRÍTICO)
-
+# =========================================
 .env
-.env.local
-.env.*.local
+.env.*
+*.env
+!.env.example
+
+# Chaves e certificados
 *.pem
 *.key
+*.crt
+*.p12
+*.pfx
 
 # Uploads de usuários e backups
 uploads/
@@ -13,16 +20,33 @@ backups/
 *.dump
 *.zip
 
+# =========================================
 # 2. DEPENDÊNCIAS (NODE.JS)
-
+# =========================================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# 3. LOGS E CACHE
+# NÃO ignore package-lock.json — ele DEVE ser commitado
+# para builds reproduzíveis e auditoria de dependências.
+# (Se você usa yarn/pnpm, ignore só o lockfile dos outros gerenciadores.)
 
+# =========================================
+# 3. BUILD E ARTEFATOS
+# =========================================
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Sharp baixa binários nativos por plataforma; não versione
+node_modules/sharp/vendor/
+
+# =========================================
+# 4. LOGS E CACHE
+# =========================================
 logs/
 *.log
 .npm/
@@ -32,9 +56,9 @@ logs/
 .temp/
 .tmp/
 
-
-# 4. SISTEMA OPERACIONAL (LINUX/MAC/WINDOWS)
-
+# =========================================
+# 5. SISTEMA OPERACIONAL
+# =========================================
 .DS_Store
 Thumbs.db
 ehthumbs.db
@@ -44,9 +68,17 @@ Desktop.ini
 *.swo
 *.rpm
 
-# 5. EDITORES DE CÓDIGO
-
+# =========================================
+# 6. EDITORES DE CÓDIGO
+# =========================================
 .vscode/
 .idea/
+*.iml
 *.sublime-project
 *.sublime-workspace
+
+# =========================================
+# 7. DOCKER / DEPLOY LOCAL
+# =========================================
+docker-compose.override.yml
+Dockerfile.local
